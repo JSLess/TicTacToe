@@ -9,5 +9,7 @@ function signIn (
     userRef : string
 ){
     sessions.set(sessionRef,userRef)
-    users.set(userRef,{})
+    users.set(userRef,{
+        status : 'Lobby'
+    })
 }

@@ -1,12 +1,12 @@
 
 export { router as HomeRouter }
 
-import { Context , Router } from 'Oak'
 import { UserState, WithUser } from '../mod.ts'
+import { Context , Router } from 'Oak'
 import { render } from 'Render'
 import { Styles } from 'Styles'
-import { Style } from 'Misc'
-import { users } from 'State';
+import { users } from 'State'
+import { Style, enterMatchmaking, leaveMatchmaking } from 'Misc'
 
 
 const router = new Router
@@ -16,12 +16,41 @@ router.get('/',async (
     next : () => Promise<any>
 ) => {
 
-    const { response , state } = context
+    const { response , request , state } = context
 
     if( state.isStranger ){
         response.redirect(`/SignIn`)
         return
     }
+
+    const user = users.get(state.userId)!
+
+    if( ! user.locked ){
+
+        if( request.url.searchParams.has('Search') ){
+
+            if( user.status === 'Lobby' ){
+                enterMatchmaking(user)
+                ; ( user.status as any ) = 'Search'
+            }
+
+            response.redirect('/')
+            return
+        }
+
+        if( request.url.searchParams.has('Lobby') ){
+
+            if( user.status === 'Search' ){
+                leaveMatchmaking(user)
+                ; ( user.status as any ) = 'Lobby'
+            }
+
+            response.redirect('/')
+            return
+        }
+    }
+
+
 
     return await next()
 
@@ -39,7 +68,9 @@ async function page (
     context : Context<WithUser>
 ){
 
-    const user = users.get(context.state.userId)
+    const user = users.get(context.state.userId)!
+
+    const { status } = user
 
     const page = (
         <html>
@@ -51,15 +82,30 @@ async function page (
             </head>
 
             <body>
-                { ( user?.match ) ? <>
 
-                    Match
+                { ( status === 'Lobby' ) ? <>
 
-                </> : <>
+                    Lobby
+
+                    <a href = '/?Search' >
+                        Search
+                    </a>
+
+                </> :
+                ( status === 'Search' ) ? <>
 
                     Searching ...
 
+                    <a href = '/?Lobby' >
+                        Cancel
+                    </a>
+
+                </> : <>
+
+                    Match
+
                 </> }
+
             </body>
         </html>
     )
