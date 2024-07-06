@@ -1,0 +1,18 @@
+{
+    "deno.enable": true,
+    "deno.lint": true,
+    "editor.defaultFormatter": null ,
+    "editor.formatOnPaste": false ,
+    "editor.formatOnSave": false ,
+    "editor.formatOnType": false,
+    "files.exclude": {
+        ".gitignore": false,
+        "deno.json": false,
+        "LICENSE": false,
+        "README.md": false,
+        ".editorconfig": false,
+        ".github": false,
+        ".vscode": false,
+        "Database": false
+    }
+}

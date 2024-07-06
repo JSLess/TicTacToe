@@ -1,0 +1,69 @@
+{
+    "lock": false,
+
+    "tasks": {
+        "tunnel" : "ngrok http --subdomain=JSLess-TicTacToe --region=us 9000" ,
+        "init" : "touch Data/Database.db" ,
+        "dev" : "bash .github/Tasks/Dev.sh"
+    },
+
+    "lint" : {
+        "rules" : {
+            "tags" : [
+                "fresh" ,
+                "recommended"
+            ]
+        }
+    },
+
+    "fmt" : {
+        "singleQuote" : true
+    },
+
+    "imports" : {
+
+        "Encoding" : "jsr:@std/encoding@1.0.0" ,
+        "Async" : "jsr:@std/async@0.224.2" ,
+        "HTTP" : "jsr:@std/http@0.224.5" ,
+        "Path" : "jsr:@std/path@0.225.2" ,
+        "TOML" : "jsr:@std/toml@0.224.1" ,
+        "ULID" : "jsr:@std/ulid@0.224.1" ,
+
+        "Preact/Render": "npm:preact-render-to-string@6.5.5" ,
+        "preact" : "npm:preact@10.22.1" ,
+
+        "Oak" : "jsr:@oak/oak@16.1.0" ,
+
+        "Moment" : "npm:moment@2.30.1" ,
+        "Zod" : "npm:zod@3.23.8" ,
+
+        "Misc/Routes" : "./Source/Routes/Misc/mod.ts" ,
+        "Misc/Async" : "./Source/Misc/AsyncResponse.ts" ,
+        "Misc/Frame" : "./Source/Misc/Frame/mod.tsx" ,
+        "Misc/Time" : "./Source/Misc/Time.ts" ,
+        "Misc" : "./Source/Misc/mod.ts" ,
+
+        "UI/Parts" : "./Source/Components/mod.ts" ,
+
+        "Framework" : "./Source/Framework/mod.ts" ,
+        "Database" : "./Source/Database/mod.ts" ,
+        "Render" : "./Source/Misc/Render/mod.ts" ,
+        "Styles" : "./Source/Styles/mod.ts" ,
+        "Routes" : "./Source/Routes/mod.ts" ,
+        "Dummy" : "./Source/Misc/Dummy/mod.ts" ,
+        "State" : "./Source/Misc/State.ts"
+    },
+
+    "compilerOptions" : {
+
+        "jsxImportSource": "preact" ,
+        "jsx" : "react-jsx" ,
+
+        "lib": [
+            "deno.unstable" ,
+            "deno.window" ,
+            "es2023" ,
+            "dom"
+        ]
+    }
+}

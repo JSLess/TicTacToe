@@ -1,0 +1,15 @@
+
+#
+#   Environment Variables
+#
+
+**/*.env
+
+
+#
+#   Database Files
+#
+
+**/*.db
+**/*.db-shm
+**/*.db-wal
