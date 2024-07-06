@@ -2,7 +2,7 @@
 export type { Props as FrameProps }
 export { Component as DynamicFrame }
 
-import { ComponentChildren, Fragment } from 'preact'
+import { ComponentChildren, Fragment, VNode } from 'preact'
 import { AsyncResponse } from 'Misc/Async'
 import { WithSession } from '../Routing/Middlewares/Typing/mod.ts'
 import { Context, Response } from 'Oak'
@@ -10,8 +10,8 @@ import { render } from 'Render'
 
 
 interface Props {
-    children : ComponentChildren
     response : Response
+    node : VNode<any>
 }
 
 
@@ -19,11 +19,9 @@ function Component (
     props : Props
 ){
 
-    const { response , children } = props
+    const { response , node } = props
 
-    const wrapper = Fragment({ children })!
-
-    const html = render(wrapper)
+    const html = render(node)
 
 
     const { headers } = response

@@ -7,6 +7,7 @@ import { render } from 'Render'
 import { Styles } from 'Styles'
 import { users } from 'State'
 import { Style, enterMatchmaking, leaveMatchmaking } from 'Misc'
+import { DynamicFrame } from '../../Misc/DynamicFrame.tsx';
 
 
 const router = new Router
@@ -49,8 +50,6 @@ router.get('/',async (
             return
         }
     }
-
-
 
     return await next()
 
@@ -110,5 +109,8 @@ async function page (
         </html>
     )
 
-    context.response.body = render(page)
+    user.frame = DynamicFrame({
+        response : context.response ,
+        node : page
+    })
 }

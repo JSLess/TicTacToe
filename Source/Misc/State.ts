@@ -3,6 +3,7 @@ export type { UnlockedUser , LockedUser , User }
 export { database , sessions , users }
 
 import { UserRef } from 'Database'
+import { AsyncResponse } from 'Misc/Async';
 
 
 const database = await Deno
@@ -20,12 +21,16 @@ type User =
 
 type UnlockedUser = {
     locked : false
-} & UserStatus
+} & UserFrame & UserStatus
 
 type LockedUser = {
     locked : true
-} & Readonly<UserStatus>
+} & UserFrame & Readonly<UserStatus>
 
+
+type UserFrame = {
+    frame ?: AsyncResponse
+}
 
 type UserStatus = {
     status : 'Lobby'

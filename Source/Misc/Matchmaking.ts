@@ -79,6 +79,7 @@ function createMatch (
     for ( const player of players ){
         ( player.status as any ) = 'Match'
         searching.delete(player)
+        player.frame?.refresh()
         player.locked = false
     }
 }

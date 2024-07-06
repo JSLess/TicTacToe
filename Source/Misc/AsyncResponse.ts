@@ -104,20 +104,26 @@ extends TypedTarget {
     }
 
     refresh (){
+
         this.write(`
             <meta
                 http-equiv = refresh
                 content = 0
             />
         `)
+
+        this.close()
     }
 
     redirect ( url : string ){
+
         this.write(`
             <meta
                 http-equiv = refresh
                 content = '0;url=${ url }'
             />
         `)
+
+        this.close()
     }
 }
