@@ -8,6 +8,7 @@ import { Styles } from 'Styles'
 import { users } from 'State'
 import { Style, enterMatchmaking, leaveMatchmaking } from 'Misc'
 import { DynamicFrame } from '../../Misc/DynamicFrame.tsx';
+import { Match } from 'UI/Parts';
 
 
 const router = new Router
@@ -59,7 +60,11 @@ router.get('/',async (
 
 const Stylesheet = Style /* CSS */ `
 
-
+    body {
+        justify-content : center ;
+        align-items : center ;
+        display : flex ;
+    }
 `
 
 
@@ -101,7 +106,7 @@ async function page (
 
                 </> : <>
 
-                    Match
+                    <Match user = { user } />
 
                 </> }
 

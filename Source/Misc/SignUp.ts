@@ -8,7 +8,7 @@ import { delay } from 'Async'
 import { ulid } from 'ULID'
 
 
-const Duration_SignUp = 1000
+const Duration_SignUp = 0
 
 
 async function attemptSignUp (

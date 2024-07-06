@@ -1,9 +1,9 @@
 
-export type { UnlockedUser , LockedUser , User }
+export type { UnlockedUser , LockedUser , User , UserInMatch }
 export { database , sessions , users }
 
-import { UserRef } from 'Database'
 import { AsyncResponse } from 'Misc/Async';
+import { UserId } from 'Database'
 
 
 const database = await Deno
@@ -14,18 +14,22 @@ const
     users = new Map<string,User>
 
 
-type User =
+type User = {
+    userRef : UserId
+} & UserLockable & UserFrame
+
+type UserLockable =
     | UnlockedUser
     | LockedUser
 
 
 type UnlockedUser = {
     locked : false
-} & UserFrame & UserStatus
+} & UserStatus
 
 type LockedUser = {
     locked : true
-} & UserFrame & Readonly<UserStatus>
+} & Readonly<UserStatus>
 
 
 type UserFrame = {
@@ -36,7 +40,10 @@ type UserStatus = {
     status : 'Lobby'
 } | {
     status : 'Search'
-} | {
+} | UserInMatch
+
+
+interface UserInMatch {
     status : 'Match'
     match : Match
 }
@@ -44,7 +51,7 @@ type UserStatus = {
 
 interface Match {
     fields : Field[][]
-    users : [ UserRef , UserRef ]
+    users : [ UserId , UserId ]
     turn : 1 | 2
 }
 

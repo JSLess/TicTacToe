@@ -3,7 +3,7 @@ export { leaveMatchmaking , enterMatchmaking }
 
 import { UserId } from 'Database'
 import { delay } from 'Async'
-import { User, users } from 'State';
+import { User, UserInMatch, users } from 'State';
 
 
 
@@ -76,8 +76,19 @@ function createMatch (
 
     console.debug('Creating match',players)
 
+    const [ playerA , playerB ] = players
+
     for ( const player of players ){
-        ( player.status as any ) = 'Match'
+
+        const matching = ( player as UserInMatch )
+
+        matching.status = 'Match'
+        matching.match = {
+            fields : new Array(3).fill(null).map(( row ) => new Array(3).fill(0)) ,
+            users : [ playerA.userRef , playerB.userRef ] ,
+            turn : 1
+        }
+
         searching.delete(player)
         player.frame?.refresh()
         player.locked = false
