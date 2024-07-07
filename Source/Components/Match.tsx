@@ -2,13 +2,12 @@
 export type { Args as MatchArgs }
 export { Component as Match }
 
-import { UserInMatch } from 'State'
+import { User, UserInMatch } from 'State'
 import { Style } from 'Misc';
-
-
-interface Args {
-    user : UserInMatch
-}
+import { JSX } from 'preact';
+import { render } from 'Preact/Render';
+import { Isolate } from '../Misc/Isolate.tsx';
+import { FieldLink } from 'UI/Parts';
 
 
 const Stylesheet = Style /* CSS */ `
@@ -34,29 +33,34 @@ const Stylesheet = Style /* CSS */ `
 
     .Fields > * {
 
-        transition : 200ms ;
+        position : relative ;
+
+        transition : opacity 200ms ;
 
         padding : 0.5rem ;
         margin : 0.9rem ;
 
         aspect-ratio : 1 ;
         width : min( 10vw , 10vh ) ;
+
+        opacity : 0.8 ;
+    }
+
+    .Fields > *:hover {
+        cursor : pointer ;
+        opacity : 1 ;
     }
 
     .Fields > *[ data-shape = X ] {
         background : #975f16ad ;
         clip-path : var( --Symbol-X ) ;
+        opacity : 1 ;
     }
 
     .Fields > *[ data-shape = O ] {
         background : #30517bb5 ;
         clip-path : var( --Symbol-O ) ;
-    }
-
-    .Fields > *:hover {
-        border-radius : 0.25rem ;
-        background : #FFFFFF1A ;
-        cursor : pointer ;
+        opacity : 1 ;
     }
 
     .Horizontal {
@@ -90,27 +94,56 @@ const Stylesheet = Style /* CSS */ `
 `
 
 
+interface Args {
+    user : UserInMatch & User
+}
+
+
 function Component (
-    args : Args
+    { user } : Args
 ){
 
-    const { fields } = args.user.match
+    const elements = new Array<JSX.Element>
 
-    const elements = fields
-        .flat()
-        .map(( value ) =>
-            <div data-shape = { ( value === 2 ) ? 'O' : ( value === 1 ) ? 'X' : '?' } />
-        )
+    for ( let y = 0 ; y < 3 ; y++ )
+        for ( let x = 0 ; x < 3 ; x++ )
+            elements.push(
+
+                <Isolate
+                    data-y = { y }
+                    data-x = { x }
+                    height = '100%'
+                    width = '100%'
+                >
+                    <FieldLink
+                        y = { y }
+                        x = { x }
+                    />
+                </Isolate>
+            )
+
+
+    const symbol = ( user.match.users.indexOf(user.userRef) === 1 ) ? 'X' : 'O'
+
+    const { fields } = user.match
 
     return <>
 
         <Stylesheet />
 
-        <div class = 'Grid' >
+        { Style /* CSS */ `
 
-            <div class = 'Fields' >
-                { elements }
-            </div>
+            .Fields > *:hover::after {
+                background : #bbbbbb ;
+                clip-path : var( --Symbol-${ symbol } ) ;
+                content : '' ;
+                position : absolute ;
+                inset : 0 ;
+            }
+
+        `() }
+
+        <div class = 'Grid' >
 
             <div class = 'Horizontal' >
                 <div />
@@ -120,6 +153,10 @@ function Component (
             <div class = 'Vertical' >
                 <div />
                 <div />
+            </div>
+
+            <div class = 'Fields' >
+                { elements }
             </div>
 
         </div>

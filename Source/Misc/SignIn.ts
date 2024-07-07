@@ -10,6 +10,8 @@ function signIn (
 ){
     sessions.set(sessionRef,userRef)
     users.set(userRef,{
-        status : 'Lobby'
+        status : 'Lobby' ,
+        userRef : userRef ,
+        locked : false
     })
 }

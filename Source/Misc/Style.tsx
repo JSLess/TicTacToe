@@ -3,12 +3,17 @@ export { Style }
 
 
 function Style (
-    css : TemplateStringsArray
+    css : TemplateStringsArray ,
+    ... inserts : Array<any>
 ){
+
+    const content = css
+        .map(( value , index ) => value + ( inserts[ index ] ?? '' ) )
+        .join('')
 
     const args = {
         dangerouslySetInnerHTML : {
-            __html : css[0]
+            __html : content
         }
     }
 

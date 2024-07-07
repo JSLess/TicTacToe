@@ -1,5 +1,5 @@
 
-export type { UnlockedUser , LockedUser , User , UserInMatch }
+export type { UnlockedUser , LockedUser , User , UserInMatch , Field }
 export { database , sessions , users }
 
 import { AsyncResponse } from 'Misc/Async';
@@ -51,7 +51,7 @@ interface UserInMatch {
 
 interface Match {
     fields : Field[][]
-    users : [ UserId , UserId ]
+    users : Array<UserId>
     turn : 1 | 2
 }
 

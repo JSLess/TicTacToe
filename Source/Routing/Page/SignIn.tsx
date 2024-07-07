@@ -256,6 +256,13 @@ async function page (
                     >
 
                         <input
+                            autoComplete = 'username'
+                            hidden = { true }
+                            name = 'Username'
+                            type = 'text'
+                        />
+
+                        <input
                             autocomplete = 'current-password'
                             placeholder = '0000 0000 0000 0000'
                             inputmode = 'numeric'
@@ -266,9 +273,12 @@ async function page (
                             type = 'password'
                             name = 'Account'
                             size = { 19 }
+                            id = 'Account'
                         />
 
-                        <label> Account Id </label>
+                        <label
+                            for = 'Account'
+                        > Account Id </label>
 
                         <input
                             value = 'Login'

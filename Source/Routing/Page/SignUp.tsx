@@ -144,6 +144,12 @@ async function page (
             <body>
                 AccountRef : { accountRef.value }
             </body>
+
+            <meta
+                http-equiv = 'refresh'
+                content = '0'
+            />
+
         </html>
     )
 
