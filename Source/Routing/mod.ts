@@ -131,11 +131,14 @@ router.use('/Frame/Field',( context ) => {
 
                     console.debug('User',user,player,users)
 
+                    const symbol = ( playerIndex === 1 ) ? 'X' : 'O'
+
                     user?.frame?.write(
                         Style /* CSS */ `
 
                             :root {
-                                --Field-${ y }-${ x } : ${ playerIndex } ;
+                                --Field-${ y }-${ x }-Color : ${ ( symbol === 'X' ) ? '#975f16ad' : '#30517bb5' } ;
+                                --Field-${ y }-${ x } : ${ ( symbol === 'X' ) ? 'var( --Symbol-X )' : 'var( --Symbol-O )' } ;
                             }
 
                         `()

@@ -21,7 +21,6 @@ function Component (
             href = { href }
 
             style = { `
-                background : #FF000044 ;
                 position : absolute ;
                 inset : 0 ;
             ` }

@@ -26,5 +26,14 @@ function Component (
     const html = ( 'children' in args )
         ? render(args.children) : args.html
 
-    return <iframe srcDoc = { html } />
+    const arg = ( args as any )
+    delete arg.children
+    delete arg.html
+
+    return (
+        <iframe
+            srcDoc = { html }
+            { ... args }
+        />
+    )
 }

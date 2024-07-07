@@ -25,6 +25,21 @@ const Stylesheet = Style /* CSS */ `
         grid-area : 1 / 1 ;
     }
 
+    .Links {
+        grid-template-columns : repeat( 3 , 1fr ) ;
+        grid-template-rows : repeat( 3 , 1fr ) ;
+        display : grid ;
+    }
+
+    .Links > * {
+
+        margin : auto ;
+        cursor : pointer ;
+        aspect-ratio : 1 ;
+        height : auto ;
+        width : min( 10vw , 10vh ) ;
+    }
+
     .Fields {
         grid-template-columns : repeat( 3 , 1fr ) ;
         grid-template-rows : repeat( 3 , 1fr ) ;
@@ -33,34 +48,11 @@ const Stylesheet = Style /* CSS */ `
 
     .Fields > * {
 
-        position : relative ;
-
-        transition : opacity 200ms ;
-
-        padding : 0.5rem ;
-        margin : 0.9rem ;
+        margin : 1.6rem ;
 
         aspect-ratio : 1 ;
+        height : auto ;
         width : min( 10vw , 10vh ) ;
-
-        opacity : 0.8 ;
-    }
-
-    .Fields > *:hover {
-        cursor : pointer ;
-        opacity : 1 ;
-    }
-
-    .Fields > *[ data-shape = X ] {
-        background : #975f16ad ;
-        clip-path : var( --Symbol-X ) ;
-        opacity : 1 ;
-    }
-
-    .Fields > *[ data-shape = O ] {
-        background : #30517bb5 ;
-        clip-path : var( --Symbol-O ) ;
-        opacity : 1 ;
     }
 
     .Horizontal {
@@ -103,18 +95,18 @@ function Component (
     { user } : Args
 ){
 
-    const elements = new Array<JSX.Element>
+    const symbol = ( user.match.users.indexOf(user.userRef) === 1 ) ? 'X' : 'O'
+
+    const links = new Array<JSX.Element>
+    const fields = new Array<JSX.Element>
+    const styles = new Array<string>
 
     for ( let y = 0 ; y < 3 ; y++ )
-        for ( let x = 0 ; x < 3 ; x++ )
-            elements.push(
+        for ( let x = 0 ; x < 3 ; x++ ){
 
-                <Isolate
-                    data-y = { y }
-                    data-x = { x }
-                    height = '100%'
-                    width = '100%'
-                >
+            links.push(
+
+                <Isolate>
                     <FieldLink
                         y = { y }
                         x = { x }
@@ -122,10 +114,22 @@ function Component (
                 </Isolate>
             )
 
+            fields.push(
+                <div
+                    data-y = { y }
+                    data-x = { x }
+                />
+            )
 
-    const symbol = ( user.match.users.indexOf(user.userRef) === 1 ) ? 'X' : 'O'
+            styles.push( /* CSS */ `
 
-    const { fields } = user.match
+                [ data-y = '${ y }' ][ data-x = '${ x }' ]{
+                    background : var( --Field-${ y }-${ x }-Color ) ;
+                    clip-path : var( --Field-${ y }-${ x } , polygon( 0 0 ) ) ;
+                }
+            ` )
+        }
+
 
     return <>
 
@@ -140,6 +144,8 @@ function Component (
                 position : absolute ;
                 inset : 0 ;
             }
+
+            ${ styles.join('') }
 
         `() }
 
@@ -156,7 +162,11 @@ function Component (
             </div>
 
             <div class = 'Fields' >
-                { elements }
+                { fields }
+            </div>
+
+            <div class = 'Links' >
+                { links }
             </div>
 
         </div>
